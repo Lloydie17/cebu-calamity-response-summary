@@ -1,3 +1,26 @@
+# Cebu Calamity Response Summary
+
+This repository, **cebu-calamity-response-summary**, provides a summarized view of data gathered from the original **cebu-calamity-response** API. The original application, developed by Clint Alonzo, Ralph Adriane Dilao, and Vince Clave Igot, was created to aid in responding to the aftermath of the earthquake in Northern Cebu. 
+
+The **cebu-calamity-response-summary** project aggregates and simplifies the data provided by the original API, offering a concise summary of the following key information for each municipality:
+
+- **Total affected individuals**  
+- **Critical needs of the affected areas**  
+- **Location details of the barangays (brgy)**  
+
+This summary feature was added to streamline access to critical data, which was not available in the original application. By providing an overview of the key statistics, it aims to assist responders, local authorities, and citizens with better decision-making during the state of calamity.
+
+**Note**: This repository serves as a temporary tool to support the affected areas during the current calamity, enhancing data accessibility and improving response coordination.
+
+## Credits
+
+- **Clint Alonzo**
+- **Ralph Adriane Dilao**
+- **Vince Clave Igot**
+
+Original developers of the **cebu-calamity-response** API.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
