@@ -163,99 +163,101 @@ const EmergencySummary = ({ data, isLoading = true }) => {
     .sort(([, a], [, b]) => b.totalPeople - a.totalPeople);
 
   return (
-    <div className="emergency-summary">
-      <h2>Emergency Summary by Municipality</h2>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900">Emergency Summary by Municipality</h2>
       {sortedMunicipalities.length === 0 ? (
-        <div className="empty-message">No data available for Cebu region</div>
+        <div className="text-center p-8 bg-gray-50 rounded-lg text-gray-600">
+          No data available for Cebu region
+        </div>
       ) : (
-        <div className="municipality-list">
+        <div className="space-y-4">
           {sortedMunicipalities.map(([municipality, data]) => (
-            <div key={municipality} className="municipality-item">
+            <div key={municipality} className="bg-white rounded-lg shadow">
               <div 
-                className="municipality-header"
+                className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                 onClick={() => setExpandedMunicipality(
                   expandedMunicipality === municipality ? null : municipality
                 )}
               >
-                <div className="header-main">
-                  <h3>{municipality}</h3>
-                  <span className="expand-icon">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-xl font-semibold text-gray-900">{municipality}</h3>
+                  <span className="text-2xl text-gray-500">
                     {expandedMunicipality === municipality ? '−' : '+'}
                   </span>
                 </div>
-                <div className="municipality-summary">
-                  <div className="stat-box">
-                    <span className="stat-value">{data.totalPeople.toLocaleString()}</span>
-                    <span className="stat-label">Affected</span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <span className="block text-2xl font-bold text-gray-900">
+                      {data.totalPeople.toLocaleString()}
+                    </span>
+                    <span className="text-sm text-gray-500">Affected</span>
                   </div>
-                  <div className="stat-box">
-                    <span className="stat-label">Last Updated:</span>
-                    <span className="stat-value">
+                  <div>
+                    <span className="text-sm text-gray-500 block">Last Updated:</span>
+                    <span className="text-gray-900">
                       {formatDate(data.latestUpdate)}
                     </span>
                   </div>
-                  <div className="stat-box">
-                    <div className="status-bars">
-                      <div className="status-bar">
-                        <div 
-                          className="status-fill" 
-                          style={{ 
-                            width: `${(data.pending / (data.pending + data.resolved || 1)) * 100}%`,
-                            backgroundColor: getStatusColor(data.pending, data.pending + data.resolved)
-                          }}
-                        />
-                      </div>
-                      <span className="status-text">
-                        {data.pending} Pending / {data.resolved} Resolved
-                      </span>
+                  <div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div 
+                        className="h-2.5 rounded-full transition-all duration-300"
+                        style={{ 
+                          width: `${(data.pending / (data.pending + data.resolved || 1)) * 100}%`,
+                          backgroundColor: getStatusColor(data.pending, data.pending + data.resolved)
+                        }}
+                      />
                     </div>
+                    <span className="text-sm text-gray-600 mt-1 block">
+                      {data.pending} Pending / {data.resolved} Resolved
+                    </span>
                   </div>
                 </div>
               </div>
               
               {expandedMunicipality === municipality && (
-                <div className="barangays-grid">
+                <div className="p-4 bg-gray-50 border-t grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {Object.entries(data.barangays)
                     .sort(([, a], [, b]) => b.totalPeople - a.totalPeople)
                     .map(([barangay, brgyData]) => (
-                      <div key={barangay} className="barangay-card">
-                        <h4>{barangay}</h4>
-                        <div className="brgy-stats">
-                          <p>
-                            <span className="stat-label">Location:</span>
-                            <span 
-                                className="stat-value location clickable"
-                                onClick={() => openInGoogleMaps(
+                      <div key={barangay} className="bg-white rounded-lg p-4 shadow-sm hover:shadow transition-shadow">
+                        <h4 className="text-lg font-semibold mb-3 text-gray-900">{barangay}</h4>
+                        <div className="space-y-3">
+                          <p className="flex flex-col">
+                            <span className="text-sm text-gray-500">Location:</span>
+                            <button 
+                              onClick={() => openInGoogleMaps(
                                 brgyData.location.lat, 
                                 brgyData.location.lng,
                                 `${barangay}, ${municipality}`
-                                )}
-                                title="Click to get directions in Google Maps"
+                              )}
+                              className="text-blue-600 hover:text-blue-800 font-mono text-sm bg-gray-100 px-2 py-1 rounded mt-1 hover:bg-gray-200 transition-colors"
+                              title="Click to get directions in Google Maps"
                             >
-                                {brgyData.location.lat.toFixed(4)}°N, {brgyData.location.lng.toFixed(4)}°E
-                            </span>
+                              {brgyData.location.lat.toFixed(4)}°N, {brgyData.location.lng.toFixed(4)}°E
+                            </button>
                           </p>
-                          <p>
-                            <span className="stat-label">Affected:</span>
-                            <span className="stat-value">{brgyData.totalPeople.toLocaleString()}</span>
+                          <p className="flex flex-col">
+                            <span className="text-sm text-gray-500">Affected:</span>
+                            <span className="font-semibold">{brgyData.totalPeople.toLocaleString()}</span>
                           </p>
-                          <p>
-                            <span className="stat-label">Needs:</span>
-                            <span className="stat-value needs-list">
+                          <div className="flex flex-col">
+                            <span className="text-sm text-gray-500 mb-1">Needs:</span>
+                            <div className="flex flex-wrap gap-2">
                               {Array.from(brgyData.needs).map(need => (
-                                <span key={need} className="need-tag">{need}</span>
+                                <span key={need} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full capitalize">
+                                  {need}
+                                </span>
                               ))}
-                            </span>
+                            </div>
+                          </div>
+                          <p className="flex flex-col">
+                            <span className="text-sm text-gray-500">Last Updated:</span>
+                            <span>{formatDate(brgyData.latestUpdate)}</span>
                           </p>
-                          <p>
-                            <span className="stat-label">Last Updated:</span>
-                            <span className="stat-value">
-                              {formatDate(brgyData.latestUpdate)}
-                            </span>
-                          </p>
-                          <p>
-                            <span className="stat-label">Status:</span>
-                            <span className="status-text">
+                          <p className="flex flex-col">
+                            <span className="text-sm text-gray-500">Status:</span>
+                            <span className="text-gray-700">
                               {brgyData.pending} Pending / {brgyData.resolved} Resolved
                             </span>
                           </p>
