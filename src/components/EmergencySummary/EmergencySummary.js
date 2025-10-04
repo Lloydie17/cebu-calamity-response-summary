@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 
-const EmergencySummary = ({ data }) => {
+const EmergencySummary = ({ data, isLoading = true }) => {
   const [expandedMunicipality, setExpandedMunicipality] = useState(null);
+
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p className="loading-text">Fetching emergency reports...</p>
+      </div>
+    );
+  }
 
   // Validation for data prop
   if (!Array.isArray(data)) {

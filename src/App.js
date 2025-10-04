@@ -5,12 +5,20 @@ import './App.css';
 
 function App() {
   const [emergencies, setEmergencies] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getEmergencies = async () => {
-      const response = await fetchEmergencies();
-      if (response.success) {
-        setEmergencies(response.data);
+      try {
+        setIsLoading(true);
+        const response = await fetchEmergencies();
+        if (response.success) {
+          setEmergencies(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching emergencies:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -19,7 +27,7 @@ function App() {
 
   return (
     <div className="App">
-      <EmergencySummary data={emergencies} />
+      <EmergencySummary data={emergencies} isLoading={isLoading} />
     </div>
   );
 }
