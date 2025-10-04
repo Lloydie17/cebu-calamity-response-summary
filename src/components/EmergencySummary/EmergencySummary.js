@@ -18,7 +18,7 @@ const EmergencySummary = ({ data, isLoading = true }) => {
   }
 
   if (data.length === 0) {
-    return <div className="empty-message">No emergencies reported</div>;
+    return <div className="empty-message">Fetching emergency reports...</div>;
   }
 
   const cleanLocationName = (name) => {
@@ -108,10 +108,10 @@ const EmergencySummary = ({ data, isLoading = true }) => {
   }, {});
 
   const getStatusColor = (pending, total) => {
-    if (total === 0) return '#6c757d'; // Gray for no data
+    if (total === 0) return '#6c757d'; 
     const percentage = (pending / total) * 100;
-    if (percentage > 70) return '#dc3545'; // Red
-    if (percentage > 30) return '#ffc107'; // Yellow
+    if (percentage > 70) return '#dc3545'; 
+    if (percentage > 30) return '#ffc107';
     return '#28a745'; // Green
   };
 
@@ -164,7 +164,7 @@ const EmergencySummary = ({ data, isLoading = true }) => {
 
   return (
     <div className="emergency-summary">
-      <h2>Emergency Summary by Location</h2>
+      <h2>Emergency Summary by Municipality</h2>
       {sortedMunicipalities.length === 0 ? (
         <div className="empty-message">No data available for Cebu region</div>
       ) : (
